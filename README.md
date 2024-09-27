@@ -87,14 +87,6 @@ postcss-px-to-vw: postcss.plugin was deprecated. Migration guide: https://evilma
 }
 ```
 
-## 安装
-
-```js
-
-npm install postcss-px-to-vw -D
-or
-yarn add postcss-px-to-vw -D
-```
 
 ## 配置参数使用与 [postcss-px-to-vw](https://www.npmjs.com/package/postcss-px-to-vw) 一致
 
