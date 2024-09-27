@@ -43,8 +43,8 @@ const defaults: Required<Omit<OptionType, 'exclude' | 'include'>> = {
   ],
 };
 
-const ignoreNextComment = 'px-to-viewport-ignore-next';
-const ignorePrevComment = 'px-to-viewport-ignore';
+const ignoreNextComment = 'px-to-vw-ignore-next';
+const ignorePrevComment = 'px-to-vw-ignore';
 
 const postcssPxToViewport = (options: OptionType) => {
   const opts = objectAssign({}, defaults, options);
@@ -65,7 +65,7 @@ const postcssPxToViewport = (options: OptionType) => {
   // const mutiDesignRoots: {value:number,mediaQuery:string, rules:AtRule[]}[] = [];
 
   return {
-    postcssPlugin: 'postcss-px-to-viewport',
+    postcssPlugin: 'postcss-px-to-vw',
     Once(css: Root, { result }: { result: any }) {
       // @ts-ignore 补充类型
       css.walkRules((rule: RuleType) => {

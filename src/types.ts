@@ -1,8 +1,8 @@
 import type { Rule } from 'postcss';
 
 export type OptionType = {
-  //  /* px-to-viewport-ignore-next */  在另一行上，阻止下一行上的转换
-  // /* px-to-viewport-ignore */  在右边的属性之后，防止在同一行上转换
+  //  /* px-to-vw-ignore-next */  在另一行上，阻止下一行上的转换
+  // /* px-to-vw-ignore */  在右边的属性之后，防止在同一行上转换
 
   /**
    * 需要转换的单位，默认为"px"

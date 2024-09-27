@@ -4,16 +4,16 @@
 
 ## 问题
 
-使用 [postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport) 控制台报以下代码
+使用 [postcss-px-to-vw](https://github.com/evrone/postcss-px-to-vw) 控制台报以下代码
 
 ```js
-postcss-px-to-viewport: postcss.plugin was deprecated. Migration guide: https://evilmartians.com/chronicles/postcss-8-plugin-migration
+postcss-px-to-vw: postcss.plugin was deprecated. Migration guide: https://evilmartians.com/chronicles/postcss-8-plugin-migration
 
 ```
 
 ## 解决
 
-`postcss-px-to-viewport` 替换 `postcss-px-to-vw`
+`postcss-px-to-vw` 替换 `postcss-px-to-vw`
 
 注意对应库版本
 
@@ -39,8 +39,8 @@ postcss-px-to-viewport: postcss.plugin was deprecated. Migration guide: https://
 }
 
 .class2 {
-  padding-top: 10px; /* px-to-viewport-ignore */
-  /* px-to-viewport-ignore-next */
+  padding-top: 10px; /* px-to-vw-ignore */
+  /* px-to-vw-ignore-next */
   padding-bottom: 10px;
   /* Any other comment */
   border: 1px solid black;
@@ -96,7 +96,7 @@ or
 yarn add postcss-px-to-vw -D
 ```
 
-## 配置参数使用与 [postcss-px-to-viewport](https://www.npmjs.com/package/postcss-px-to-viewport) 一致
+## 配置参数使用与 [postcss-px-to-vw](https://www.npmjs.com/package/postcss-px-to-vw) 一致
 
 **默认选项：**
 
@@ -121,23 +121,23 @@ yarn add postcss-px-to-vw -D
 
 ## API 说明
 
-| 参数 | 说明 | 类型 | 默认值 |
-| :-- | --- | --- | --- |
-| `unitToConvert` | 需要转换的单位，默认为 px | `string` | px |
-| `viewportWidth` | 设计稿的视口宽度,如传入函数，函数的参数为当前处理的文件路径,函数返回 `undefind` 跳过转换 | `number \| Function` | 320 |
-| `unitPrecision` | 单位转换后保留的精度 | `number` | 5 |
-| `propList` | 能转化为 vw 的属性列表 | `string[]` | ['*'] |
-| `viewportUnit` | 希望使用的视口单位 | `string` | vw |
-| `fontViewportUnit` | 字体使用的视口单位 | `string` | vw |
-| `selectorBlackList` | 需要忽略的 CSS 选择器，不会转为视口单位，使用原有的 px 等单位 | `string[]` | [] |
-| `minPixelValue` | 设置最小的转换数值，如果为 1 的话，只有大于 1 的值会被转换 | `number` | 1 |
-| `mediaQuery` | 媒体查询里的单位是否需要转换单位 | `boolean` | false |
-| `replace` | 是否直接更换属性值，而不添加备用属性 | `boolean` | true |
-| `landscape` | 是否添加根据 `landscapeWidth` 生成的媒体查询条件 `@media (orientation: landscape)` | `boolean` | false |
-| `landscapeUnit` | 横屏时使用的单位 | `string` | vw |
-| `landscapeWidth` | 横屏时使用的视口宽度,,如传入函数，函数的参数为当前处理的文件路径,函数返回 `undefind` 跳过转换 | `number` | 568 |
-| `exclude` | 忽略某些文件夹下的文件或特定文件，例如 node_modules 下的文件，如果值是一个正则表达式，那么匹配这个正则的文件会被忽略，如果传入的值是一个数组，那么数组里的值必须为正则 | `Regexp` | undefined |
-| `include` | 需要转换的文件，例如只转换 'src/mobile' 下的文件 (`include: /\/src\/mobile\//`)，如果值是一个正则表达式，将包含匹配的文件，否则将排除该文件， 如果传入的值是一个数组，那么数组里的值必须为正则 | `Regexp` | undefined |
+| 参数                | 说明                                                                                                                                                                                           | 类型                 | 默认值    |
+| :------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------- |
+| `unitToConvert`     | 需要转换的单位，默认为 px                                                                                                                                                                      | `string`             | px        |
+| `viewportWidth`     | 设计稿的视口宽度,如传入函数，函数的参数为当前处理的文件路径,函数返回 `undefind` 跳过转换                                                                                                       | `number \| Function` | 320       |
+| `unitPrecision`     | 单位转换后保留的精度                                                                                                                                                                           | `number`             | 5         |
+| `propList`          | 能转化为 vw 的属性列表                                                                                                                                                                         | `string[]`           | ['*']     |
+| `viewportUnit`      | 希望使用的视口单位                                                                                                                                                                             | `string`             | vw        |
+| `fontViewportUnit`  | 字体使用的视口单位                                                                                                                                                                             | `string`             | vw        |
+| `selectorBlackList` | 需要忽略的 CSS 选择器，不会转为视口单位，使用原有的 px 等单位                                                                                                                                  | `string[]`           | []        |
+| `minPixelValue`     | 设置最小的转换数值，如果为 1 的话，只有大于 1 的值会被转换                                                                                                                                     | `number`             | 1         |
+| `mediaQuery`        | 媒体查询里的单位是否需要转换单位                                                                                                                                                               | `boolean`            | false     |
+| `replace`           | 是否直接更换属性值，而不添加备用属性                                                                                                                                                           | `boolean`            | true      |
+| `landscape`         | 是否添加根据 `landscapeWidth` 生成的媒体查询条件 `@media (orientation: landscape)`                                                                                                             | `boolean`            | false     |
+| `landscapeUnit`     | 横屏时使用的单位                                                                                                                                                                               | `string`             | vw        |
+| `landscapeWidth`    | 横屏时使用的视口宽度,,如传入函数，函数的参数为当前处理的文件路径,函数返回 `undefind` 跳过转换                                                                                                  | `number`             | 568       |
+| `exclude`           | 忽略某些文件夹下的文件或特定文件，例如 node_modules 下的文件，如果值是一个正则表达式，那么匹配这个正则的文件会被忽略，如果传入的值是一个数组，那么数组里的值必须为正则                         | `Regexp`             | undefined |
+| `include`           | 需要转换的文件，例如只转换 'src/mobile' 下的文件 (`include: /\/src\/mobile\//`)，如果值是一个正则表达式，将包含匹配的文件，否则将排除该文件， 如果传入的值是一个数组，那么数组里的值必须为正则 | `Regexp`             | undefined |
 
 ## 补充说明
 
@@ -156,19 +156,19 @@ yarn add postcss-px-to-vw -D
 
 - 你可以使用特殊的注释来忽略单行的转换:
 
-  - `/* px-to-viewport-ignore-next */` — 在单独的行上，防止在下一行上进行转换。
-  - `/* px-to-viewport-ignore */` — 在右边的属性之后，防止在同一行上进行转换。
+  - `/* px-to-vw-ignore-next */` — 在单独的行上，防止在下一行上进行转换。
+  - `/* px-to-vw-ignore */` — 在右边的属性之后，防止在同一行上进行转换。
 
 Example:
 
 ```css
 /* example input: */
 .class {
-  /* px-to-viewport-ignore-next */
+  /* px-to-vw-ignore-next */
   width: 10px;
   padding: 10px;
-  height: 10px; /* px-to-viewport-ignore */
-  border: solid 2px #000; /* px-to-viewport-ignore */
+  height: 10px; /* px-to-vw-ignore */
+  border: solid 2px #000; /* px-to-vw-ignore */
 }
 
 /* example output: */
@@ -214,7 +214,7 @@ export default defineConfig({
       plugins: [
         postcsspxtoviewport8plugin({
           unitToConvert: 'px',
-          viewportWidth: file => {
+          viewportWidth: (file) => {
             let num = 1920;
             if (file.indexOf('m_') !== -1) {
               num = 375;
