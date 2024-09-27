@@ -239,7 +239,7 @@ const postcssPxToViewport = (options: OptionType) => {
       }
       mutiDesignRules.forEach((item) => {
         const mutiDesignRoot = new AtRule({
-          params: item.value,
+          params: item.mediaQuery,
           name: 'media',
         });
         item.rules.forEach(function(rule) {
