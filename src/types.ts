@@ -82,6 +82,14 @@ export type OptionType = {
    */
   landscapeWidth?: number | ((filePath: string) => number|undefined);
 
+
+  mutiDesign?: boolean;
+  mutiDesignUnit?: string;
+  mutiDesignWidth?: {
+    value:number | ((filePath: string) => number|undefined)
+    mediaQuery: string;
+  }[];
+
 };
 
 export type ParentExtendType = { prop: string; value: string; params: string };

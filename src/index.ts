@@ -29,6 +29,18 @@ const defaults: Required<Omit<OptionType, 'exclude' | 'include'>> = {
   landscape: false,
   landscapeUnit: 'vw',
   landscapeWidth: 568,
+  mutiDesign: false,
+  mutiDesignUnit: 'vw',
+  mutiDesignWidth: [
+    {
+      value: 750,
+      mediaQuery: '(min-width: 750px)',
+    },
+    {
+      value: 1920,
+      mediaQuery: '(min-width: 1920px)',
+    },
+  ],
 };
 
 const ignoreNextComment = 'px-to-viewport-ignore-next';
@@ -40,6 +52,17 @@ const postcssPxToViewport = (options: OptionType) => {
   const pxRegex = getUnitRegexp(opts.unitToConvert);
   const satisfyPropList = createPropListMatcher(opts.propList);
   const landscapeRules: AtRule[] = [];
+  const mutiDesignRules: {
+    value: number | ((filePath: string) => number | undefined);
+    mediaQuery: string;
+    rules: AtRule[];
+  }[] = opts.mutiDesignWidth?.map((rul) => {
+    return {
+      ...rul,
+      rules: [],
+    };
+  });
+  // const mutiDesignRoots: {value:number,mediaQuery:string, rules:AtRule[]}[] = [];
 
   return {
     postcssPlugin: 'postcss-px-to-viewport',
@@ -92,6 +115,46 @@ const postcssPxToViewport = (options: OptionType) => {
           if (landscapeRule.nodes.length > 0) {
             landscapeRules.push((landscapeRule as unknown) as AtRule);
           }
+        }
+
+        if (opts.mutiDesign && !rule.parent?.params) {
+          const mutiDesignRule = options.mutiDesignWidth?.map((rul) => {
+            return {
+              ...rul,
+              rules: rule.clone().removeAll(),
+            };
+          });
+          rule.walkDecls((decl) => {
+            if (decl.value.indexOf(opts.unitToConvert) === -1) return;
+            if (!satisfyPropList(decl.prop)) return;
+            options.mutiDesignWidth?.forEach((item) => {
+              let width;
+              if (typeof item.value === 'function') {
+                const num = item.value(file);
+                if (!num) return;
+                width = num;
+              } else {
+                width = item.value;
+              }
+              mutiDesignRule
+                ?.find((mu) => mu.value === item.value)
+                ?.rules.append(
+                  decl.clone({
+                    value: decl.value.replace(
+                      pxRegex,
+                      createPxReplace(opts, opts.mutiDesignUnit, width),
+                    ),
+                  }),
+                );
+            });
+          });
+          mutiDesignRule?.forEach((ru) => {
+            if (ru.rules.nodes.length > 0) {
+              mutiDesignRules
+                .find((ri) => ri.value === ru.value)
+                ?.rules.push((ru.rules as unknown) as AtRule);
+            }
+          });
         }
 
         if (!validateParams(rule.parent?.params, opts.mediaQuery)) return;
@@ -159,24 +222,8 @@ const postcssPxToViewport = (options: OptionType) => {
           }
         });
       });
-
-      // if (landscapeRules.length > 0) {
-      //   const landscapeRoot = new AtRule({
-      //     params: '(orientation: landscape)',
-      //     name: 'media',
-      //   });
-
-      //   landscapeRules.forEach((rule) => {
-      //     landscapeRoot.append(rule);
-      //   });
-      //   css.append(landscapeRoot);
-      // }
     },
-    // https://www.postcss.com.cn/docs/writing-a-postcss-plugin
-    // Declaration Rule RuleExit OnceExit
-    // There two types or listeners: enter and exit.
-    // Once, Root, AtRule, and Rule will be called before processing children.
-    // OnceExit, RootExit, AtRuleExit, and RuleExit after processing all children inside node.
+
     OnceExit(css: Root, { AtRule }: { AtRule: any }) {
       // 在 Once里跑这段逻辑，设置横屏时，打包后到生产环境竖屏样式会覆盖横屏样式，所以 OnceExit再执行。
       if (landscapeRules.length > 0) {
@@ -190,6 +237,16 @@ const postcssPxToViewport = (options: OptionType) => {
         });
         css.append(landscapeRoot);
       }
+      mutiDesignRules.forEach((item) => {
+        const mutiDesignRoot = new AtRule({
+          params: item.value,
+          name: 'media',
+        });
+        item.rules.forEach(function(rule) {
+          mutiDesignRoot.append(rule);
+        });
+        css.append(mutiDesignRoot);
+      });
     },
   };
 };
