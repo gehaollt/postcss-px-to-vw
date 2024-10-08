@@ -77,12 +77,6 @@ export declare type OptionType = {
      * 支持传入函数，函数的参数为当前处理的文件路径
      */
     landscapeWidth?: number | ((filePath: string) => number | undefined);
-    mutiDesign?: boolean;
-    mutiDesignUnit?: string;
-    mutiDesignWidth?: {
-        value: number | ((filePath: string) => number | undefined);
-        mediaQuery: string;
-    }[];
 };
 export declare type ParentExtendType = {
     prop: string;

@@ -29,18 +29,6 @@ const defaults: Required<Omit<OptionType, 'exclude' | 'include'>> = {
   landscape: false,
   landscapeUnit: 'vw',
   landscapeWidth: 568,
-  mutiDesign: false,
-  mutiDesignUnit: 'vw',
-  mutiDesignWidth: [
-    {
-      value: 750,
-      mediaQuery: '(min-width: 750px)',
-    },
-    {
-      value: 1920,
-      mediaQuery: '(min-width: 1920px)',
-    },
-  ],
 };
 
 const ignoreNextComment = 'px-to-vw-ignore-next';
@@ -52,16 +40,6 @@ const postcssPxToViewport = (options: OptionType) => {
   const pxRegex = getUnitRegexp(opts.unitToConvert);
   const satisfyPropList = createPropListMatcher(opts.propList);
   const landscapeRules: AtRule[] = [];
-  const mutiDesignRules: {
-    value: number | ((filePath: string) => number | undefined);
-    mediaQuery: string;
-    rules: AtRule[];
-  }[] = opts.mutiDesignWidth?.map((rul) => {
-    return {
-      ...rul,
-      rules: [],
-    };
-  });
   // const mutiDesignRoots: {value:number,mediaQuery:string, rules:AtRule[]}[] = [];
 
   return {
@@ -115,46 +93,6 @@ const postcssPxToViewport = (options: OptionType) => {
           if (landscapeRule.nodes.length > 0) {
             landscapeRules.push((landscapeRule as unknown) as AtRule);
           }
-        }
-
-        if (opts.mutiDesign && !rule.parent?.params) {
-          const mutiDesignRule = options.mutiDesignWidth?.map((rul) => {
-            return {
-              ...rul,
-              rules: rule.clone().removeAll(),
-            };
-          });
-          rule.walkDecls((decl) => {
-            if (decl.value.indexOf(opts.unitToConvert) === -1) return;
-            if (!satisfyPropList(decl.prop)) return;
-            options.mutiDesignWidth?.forEach((item) => {
-              let width;
-              if (typeof item.value === 'function') {
-                const num = item.value(file);
-                if (!num) return;
-                width = num;
-              } else {
-                width = item.value;
-              }
-              mutiDesignRule
-                ?.find((mu) => mu.value === item.value)
-                ?.rules.append(
-                  decl.clone({
-                    value: decl.value.replace(
-                      pxRegex,
-                      createPxReplace(opts, opts.mutiDesignUnit, width),
-                    ),
-                  }),
-                );
-            });
-          });
-          mutiDesignRule?.forEach((ru) => {
-            if (ru.rules.nodes.length > 0) {
-              mutiDesignRules
-                .find((ri) => ri.value === ru.value)
-                ?.rules.push((ru.rules as unknown) as AtRule);
-            }
-          });
         }
 
         if (!validateParams(rule.parent?.params, opts.mediaQuery)) return;
@@ -237,16 +175,6 @@ const postcssPxToViewport = (options: OptionType) => {
         });
         css.append(landscapeRoot);
       }
-      mutiDesignRules.forEach((item) => {
-        const mutiDesignRoot = new AtRule({
-          params: item.mediaQuery,
-          name: 'media',
-        });
-        item.rules.forEach(function(rule) {
-          mutiDesignRoot.append(rule);
-        });
-        css.append(mutiDesignRoot);
-      });
     },
   };
 };
