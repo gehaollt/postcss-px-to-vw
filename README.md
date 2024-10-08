@@ -2,18 +2,7 @@
 
 将 px 单位转换为视口单位的 (vw, vh, vmin, vmax) 的 [PostCSS](https://github.com/postcss/postcss) 插件.
 
-## 问题
-
-使用 [postcss-px-to-vw](https://github.com/evrone/postcss-px-to-vw) 控制台报以下代码
-
-```js
-postcss-px-to-vw: postcss.plugin was deprecated. Migration guide: https://evilmartians.com/chronicles/postcss-8-plugin-migration
-
-```
-
-## 解决
-
-`postcss-px-to-vw` 替换 `postcss-px-to-vw`
+forworked by [postcss-px-to-viewport-8-plugin](https://github.com/lkxian888/postcss-px-to-viewport-8-plugin)
 
 注意对应库版本
 
@@ -86,7 +75,6 @@ postcss-px-to-vw: postcss.plugin was deprecated. Migration guide: https://evilma
   }
 }
 ```
-
 
 ## 配置参数使用与 [postcss-px-to-vw](https://www.npmjs.com/package/postcss-px-to-vw) 一致
 
@@ -235,4 +223,4 @@ export default defineConfig({
 
 ## 作者
 
-- [lkxian888](https://github.com/lkxian888)
+- [gehaollt](https://github.com/gehaollt)
